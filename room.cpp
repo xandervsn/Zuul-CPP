@@ -1,24 +1,46 @@
 #include <iostream>
 #include <cstring>
 #include "Room.h"
+#include <map>
 
 using namespace std;
 
-Room::Room(){
-  desc = new char[80];
-  id = 0;
+void Room::setName(char* nameOut){
+  strcpy(name, nameOut);
 }
 
-Room::Room(char* newDesc){
-  desc = new char[80];
-  strcpy(desc, newDesc);
-  id = 0;
+void Room::getName(char* charIn){
+  strcpy(charIn, name);
 }
 
-char* Room::getDesc(){
-  return desc;
+void Room::setExit(char* dir, Room* roomExit){
+  mymap.insert(pair<char*, Room*>(dir, roomExit));
 }
 
-int Room::getID(){
-  return id;
+void Room::getExit(char* dir, Room*& roomCurrent){
+  for(it = mymap.begin(); it != mymap.end(); ++it){
+    if(strcmp(dir, it->first) == 0){
+      roomCurrent = it->second;
+    }
+  }
+}
+
+void Room::printDesc(char* output){
+  cout << "You are in " << name << endl;
+  cout << "Exits: " << endl;
+  for(it = mymap.begin(); it!= mymap.end(); ++it){
+    if(strcmp("North", it->first) == 0){
+      cout << "North";
+    }
+    if (strcmp("East", it->first) == 0){
+      cout << "East";
+    }
+    if(strcmp("South", it->first) == 0){
+      cout << "South";
+    }
+    if(strcmp("West", it->first) == 0){
+      cout << "West";
+    }
+  }
+  cout << endl;
 }
