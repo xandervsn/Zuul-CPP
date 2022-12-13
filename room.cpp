@@ -18,7 +18,8 @@ void Room::setExit(char* dir, Room* roomExit){
 }
 
 void Room::getExit(char* dir, Room*& roomCurrent){
-  for(it = mymap.begin(); it != mymap.end(); ++it){
+  for(it = mymap.begin(); it != mymap.end(); it++){
+    //cout << dir << " | " << it->first << endl;
     if(strcmp(dir, it->first) == 0){
       roomCurrent = it->second;
     }
@@ -28,18 +29,18 @@ void Room::getExit(char* dir, Room*& roomCurrent){
 void Room::printDesc(char* output){
   cout << "You are in " << name << endl;
   cout << "Exits: " << endl;
-  for(it = mymap.begin(); it!= mymap.end(); ++it){
+  for(it = mymap.begin(); it!= mymap.end(); it++){
     if(strcmp("North", it->first) == 0){
-      cout << "North";
+      cout << "North, ";
     }
     if (strcmp("East", it->first) == 0){
-      cout << "East";
+      cout << "East, ";
     }
     if(strcmp("South", it->first) == 0){
-      cout << "South";
+      cout << "South, ";
     }
     if(strcmp("West", it->first) == 0){
-      cout << "West";
+      cout << "West, ";
     }
   }
   cout << endl;

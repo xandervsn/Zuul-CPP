@@ -101,7 +101,28 @@ int main(){
   e_hall->setExit(west, cafeteria);
 
   //actual gameplay time
-  
+  Room* roomCurrent = cafeteria;
+  cout << "Welcome to Zuul! Input 'help' for commands" << endl;
+
+  while(true){
+    roomCurrent->printDesc(output);
+    cout << "What do you want to do?" << endl;
+    cin >> input;
+    cout << endl;
+    if(strcmp(input, "move") == 0){
+      cout << "'North', 'East', 'South', or 'West'?" << endl;
+      cin >> input;
+      cout << endl;
+      roomCurrent->getExit(input, roomCurrent);
+    }else if(strcmp(input, "help") == 0){
+      cout << "Possible commands: 'move', 'help', 'quit'" << endl;
+    }else if(strcmp(input, "quit") == 0){
+      cout << "Thank you for playing Zuul :3";
+      return 0;
+    }else{
+      cout << "Sorry, you can't do that. Input 'help' for help" << endl;
+    }
+  }
   return 0;
 }
 
