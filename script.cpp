@@ -1,7 +1,14 @@
+/* Xander Siruno-Nebel
+   C++/Data Structs, Galbraith
+   12/17/22
+   Zuul: plays the console game 'Zuul'
+*/
+
 #include <iostream>
 #include <cstring>
 #include <vector>
 #include "Room.h"
+#include "Item.h"
 #include <map>
 
 
@@ -10,12 +17,17 @@ using namespace std;
 int main(){
   char input[80];
   char output[80];
+  char item1[80];
+  char item2[80];
+  vector<Item*> Inventory;
 
+  //directions
   char* north = (char*)("North");
   char* east = (char*)("East");
   char* south = (char*)("South");
   char* west = (char*)("West");
 
+  //room init
   Room* cafeteria = new Room();
   cafeteria->setName((char*)("cafeteria "));
   Room* n_hall = new Room();
@@ -48,7 +60,7 @@ int main(){
   weapons->setName((char*)("weapons "));
   Room* e_hall = new Room();
   e_hall->setName((char*)("e_hall "));
-  
+
   //cafeteria
   cafeteria->setExit(east, e_hall);
   cafeteria->setExit(south, main_hall);
@@ -57,7 +69,7 @@ int main(){
   n_hall->setExit(east, cafeteria);
   n_hall->setExit(west, up_engine);
   //up_engine
-  up_engine->setExit(east , up_engine);
+  up_engine->setExit(east , n_hall);
   up_engine->setExit(south , w_hall);
   //w_hall
   w_hall->setExit(north, up_engine);
@@ -100,23 +112,56 @@ int main(){
   e_hall->setExit(south, weapons);
   e_hall->setExit(west, cafeteria);
 
+  reactor->addItem((char*)("Mask"));
+  cams->addItem((char*)("Tapes"));
+  weapons->addItem((char*)("Body"));
+  shields->addItem((char*)("Knife"));
+  comms->addItem((char*)("Footprints"));
+  cafeteria->addItem((char*)("Button"));
+
   //actual gameplay time
   Room* roomCurrent = cafeteria;
   cout << "Welcome to Zuul! Input 'help' for commands" << endl;
 
   while(true){
-    roomCurrent->printDesc(output);
+    roomCurrent->printDesc(output); //prints current room
     cout << "What do you want to do?" << endl;
     cin >> input;
     cout << endl;
-    if(strcmp(input, "move") == 0){
+    if(strcmp(input, "inv") == 0){ //INVENTORY ======================
+      cout << "Inventory: " << endl;
+      if(Inventory.size() > 0){
+        for(int i = 0; i < Inventory.size(); i++){
+          Inventory[i]->getName(output);
+          cout << output << endl;
+        }
+      }
+    }else if(strcmp(input, "take") == 0){//TAKE ======================
+      cout << "Which item?" << endl;
+      cin >> input;
+      if(strcmp(input, "Button") == 0 && roomCurrent == cafeteria){
+        cout << "The button is bolted to the ground. You call an emergency meeting: " << endl;
+        if(Inventory.size() > 4){//win condition
+          cout << "Red was the impostor. Congratulations -- you win!" << endl;
+          return 0;
+        }else{
+          cout << "Insufficient evidence. Nobody believes you" << endl;
+        }
+      }else{
+        roomCurrent->giveItems(Inventory, input);
+      }
+    }else if(strcmp(input, "drop") == 0){ //DROP ======================
+      cout << "Which item?" << endl;
+      cin>> input;
+      roomCurrent->takeItems(Inventory, input);
+    }else if(strcmp(input, "move") == 0){ //MOVE ======================
       cout << "'North', 'East', 'South', or 'West'?" << endl;
       cin >> input;
       cout << endl;
       roomCurrent->getExit(input, roomCurrent);
-    }else if(strcmp(input, "help") == 0){
-      cout << "Possible commands: 'move', 'help', 'quit'" << endl;
-    }else if(strcmp(input, "quit") == 0){
+    }else if(strcmp(input, "help") == 0){ //HELP ======================
+      cout << "Possible commands: 'move', 'help', 'quit', 'inv', take, drop" << endl;
+    }else if(strcmp(input, "quit") == 0){ //QUIT ======================
       cout << "Thank you for playing Zuul :3";
       return 0;
     }else{
@@ -125,5 +170,3 @@ int main(){
   }
   return 0;
 }
-
-

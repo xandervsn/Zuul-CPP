@@ -1,6 +1,8 @@
 #include <iostream>
 #include <cstring>
 #include <map>
+#include <vector>
+#include "Item.h"
 
 using namespace std;
 
@@ -15,4 +17,8 @@ class Room{
   void setExit(char* dir, Room* roomExit);
   void getExit(char* dir, Room*& roomCurrent);
   void printDesc(char* output);
+  void addItem(char* nameOut);
+  void giveItems(vector<Item*>& playerInv, char* nameOut);
+  void takeItems(vector<Item*>& playerInv, char* nameOut);
+  vector<Item*> roomItems;
 };
